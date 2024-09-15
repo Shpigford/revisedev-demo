@@ -8,8 +8,8 @@ Sentry.init do |config|
   config.debug = true # Enable debug mode for testing
 end
 
-def divide_by_zero
-  1 / 0
+def divide_by_zero(numerator, denominator)
+  denominator.zero? ? nil : numerator / denominator
 end
 
 def main
@@ -17,13 +17,13 @@ def main
   Sentry.capture_message("App started")
 
   begin
-    divide_by_zero
-  rescue ZeroDivisionError => e
-    Sentry.capture_exception(e)
-    puts "Caught an error: #{e.message}"
-  end
-
-  puts "App finished."
+    result = divide_by_zero(1, 0)
+    if result.nil?
+      puts "Cannot divide by zero"
+    else
+      puts "Result: #{result}"
+    end
+  rescue => e
 end
 
 main
